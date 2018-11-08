@@ -1,0 +1,8 @@
+msgid ""
+msgstr ""
+"Language: es"
+
+#: src/components/Footer/index.js
+msgid "About Us"
+msgstr "dofjekr fer"
+

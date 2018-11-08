@@ -4,6 +4,7 @@ from . import models, serializers
 from khangram.users import models as user_models
 from khangram.users import serializers as user_serializers
 from khangram.notifications import views as notificaion_views
+from rest_framework import status
 
 
 class Images(APIView):
@@ -63,7 +64,7 @@ class LikeImage(APIView):
 
         users = user_models.User.objects.filter(id__in=like_creators_ids)
 
-        serializer = user_serializers.ListUserSerializer(users, many=True)
+        serializer = user_serializers.ListUserSerializer(users, many=True, context={"request" : request})
 
         return Response(data=serializer.data, status=200)
 
@@ -178,7 +179,7 @@ class Search(APIView):
 
             images = models.Image.objects.filter(tags__name__in=hashtags).distinct()
 
-            serializer = serializers.UserProfileImageSerializer(images, many=True)
+            serializer = serializers.UserProfileImageSerializer(images, many=True, context={"request": request})
 
             return Response(data=serializer.data, status=200)
 
@@ -222,7 +223,7 @@ class ImageDetail(APIView):
         except models.Image.DoesNotExist:
             return Response(status=404)
 
-        serializer = serializers.ImageSerializer(image)
+        serializer = serializers.ImageSerializer(image, context={'request': request})
 
         return Response(data=serializer.data, status=200)
 
@@ -235,7 +236,7 @@ class ImageDetail(APIView):
 
         if image is None:
 
-            return Response(status=401)
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
         serializer = serializers.InputImageSerializer(image, data=request.data, partial=True)
 
@@ -257,7 +258,7 @@ class ImageDetail(APIView):
 
         if image is None:
 
-            return Response(status=401)
+            return Response(status=status.HTTP_400_BAD_REQUEST)
         
         image.delete()
 
