@@ -1,6 +1,6 @@
 {
   "dependencies": {
     "@types/react": "^16.4.13",
-    "babel-loader": "^7.1.5"
+    "babel-loader": "^9.1.0"
   }
 }
